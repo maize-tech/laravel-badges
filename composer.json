@@ -1,0 +1,71 @@
+{
+    "name": "maize-tech/laravel-badges",
+    "description": "Laravel Badges",
+    "keywords": [
+        "maize-tech",
+        "laravel",
+        "badges"
+    ],
+    "homepage": "https://github.com/maize-tech/laravel-badges",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Riccardo Dalla Via",
+            "email": "riccardo.dallavia@maize.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "spatie/laravel-package-tools": "^1.14.1",
+        "illuminate/console": "^10.0",
+        "illuminate/database": "^10.0",
+        "illuminate/support": "^10.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.8",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.20",
+        "pestphp/pest-plugin-arch": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Maize\\Badges\\": "src/",
+            "Maize\\Badges\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Maize\\Badges\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maize\\Badges\\BadgesServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
