@@ -12,7 +12,8 @@ use Maize\Badges\Tests\Support\Badges\TrueProgressableBadge;
 use Maize\Badges\Tests\Support\Models\Team;
 use Maize\Badges\Tests\Support\Models\User;
 
-it('should give badges', function (HasBadges $model) {
+it('should give badges', function (Closure $modelFactory) {
+    $model = $modelFactory();
     expect($model->giveBadge(TrueBadge::class))
         ->not()->toBeNull()
         ->and($model->giveBadge(FalseBadge::class))
@@ -22,9 +23,10 @@ it('should give badges', function (HasBadges $model) {
         ->and(FalseBadge::giveTo($model))
         ->toBeNull();
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should give progressable badges', function (HasBadges $model) {
     expect($model->giveBadge(TrueProgressableBadge::class))
@@ -36,9 +38,10 @@ it('should give progressable badges', function (HasBadges $model) {
         ->and(FalseProgressableBadge::giveTo($model))
         ->toBeNull();
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should check if model has badge', function (HasBadges $model) {
     $model->giveBadge(TrueBadge::class);
@@ -47,9 +50,10 @@ it('should check if model has badge', function (HasBadges $model) {
         $model->hasBadge(TrueBadge::class)
     )->toBeTrue();
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should retrieve badge metadata', function (HasBadges $model) {
     $badge = $model->giveBadge(TrueBadge::class);
@@ -63,9 +67,10 @@ it('should retrieve badge metadata', function (HasBadges $model) {
         ->and(TrueBadge::getMetadata('name'))
         ->toBe('True Badge');
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should retrieve all awarded badges', function (HasBadges $model) {
     $model->giveBadge(TrueBadge::class);
@@ -75,18 +80,20 @@ it('should retrieve all awarded badges', function (HasBadges $model) {
         ->toHaveCount(2)
         ->toContainOnlyInstancesOf(BadgeModel::class);
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should sync badges', function (HasBadges $model) {
     expect($model->syncBadges())
         ->toHaveCount(2)
         ->toContainOnlyInstancesOf(BadgeModel::class);
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should delete badges on model delete', function (HasBadges $model) {
     $model->syncBadges();
@@ -94,9 +101,10 @@ it('should delete badges on model delete', function (HasBadges $model) {
 
     expect(BadgeModel::count())->toBe(0);
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
+
 
 it('should fire event on badge awarded', function (HasBadges $model) {
     \Illuminate\Support\Facades\Event::fake();
@@ -111,8 +119,8 @@ it('should fire event on badge awarded', function (HasBadges $model) {
         }
     );
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
 
 it('should clear old badges', function (HasBadges $model) {
@@ -124,6 +132,6 @@ it('should clear old badges', function (HasBadges $model) {
 
     expect($model->badges)->toBeEmpty();
 })->with([
-    ['model' => fn () => User::factory()->create()],
-    ['model' => fn () => Team::factory()->create()],
+    [fn () => User::factory()->create()],
+    [fn () => Team::factory()->create()],
 ]);
